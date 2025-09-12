@@ -1,0 +1,17 @@
+streamlit
+python-docx
+pdfminer.six
+pytesseract
+Pillow
+pdf2image
+spacy
+sentence-transformers
+scikit-learn
+pandas
+numpy
+nltk
+PyPDF2
+python-magic
+requests
+openai
+reportlab
