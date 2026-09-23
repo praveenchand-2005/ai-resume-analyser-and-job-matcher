@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { supabase } from "../../../lib/supabase";
 
 export default async function JobPage({params}:{params:Promise<{slug:string}>}) {
   const {slug}=await params;
-  return <main className="min-h-screen bg-slate-950 text-white"><div className="mx-auto max-w-3xl px-6 py-12"><Link href="/jobs" className="text-cyan-300">← All jobs</Link><h1 className="mt-8 text-4xl font-bold">Job details</h1><p className="mt-4 text-slate-400">Job: {slug}</p><p className="mt-6">This job-detail route is ready for the live Supabase record and employer application flow.</p></div></main>;
+  const {data:job}=await supabase.from("jobbridge_jobs").select("id,title,description,location,work_mode,employment_type,experience,salary_text,skills,source_name,source_url,apply_url,posted_at,jobbridge_companies(name,slug,website_url,description)").eq("slug",slug).eq("status","active").maybeSingle();
+  if(!job)return <main className="min-h-screen bg-slate-950 text-white"><div className="mx-auto max-w-3xl px-6 py-12"><Link href="/jobs" className="text-cyan-300">← All jobs</Link><h1 className="mt-8 text-3xl font-bold">Job not found</h1></div></main>;
+  const company=Array.isArray(job.jobbridge_companies)?job.jobbridge_companies[0]:job.jobbridge_companies;
+  return <main className="min-h-screen bg-slate-950 text-white"><div className="mx-auto max-w-4xl px-6 py-12"><Link href="/jobs" className="text-cyan-300">← All jobs</Link><article className="mt-8 rounded-3xl border border-slate-800 bg-slate-900 p-8"><p className="text-cyan-300">{company?.name ?? "Company"}</p><h1 className="mt-2 text-4xl font-bold">{job.title}</h1><p className="mt-4 text-slate-400">{job.location ?? "Location not specified"} · {job.work_mode ?? "Work mode not specified"}</p><div className="mt-6 flex flex-wrap gap-2">{(job.skills ?? []).map((s:string)=><span key={s} className="rounded-full border border-slate-700 px-3 py-1 text-sm">{s}</span>)}</div><div className="mt-8 whitespace-pre-wrap text-slate-300">{job.description ?? "No job description provided."}</div><a href={job.apply_url} target="_blank" rel="noreferrer" className="mt-8 inline-block rounded-xl bg-cyan-400 px-6 py-3 font-bold text-slate-950">Apply on employer site</a><p className="mt-4 text-xs text-slate-500">Application opens on the original employer application URL.</p></article></div></main>;
 }
