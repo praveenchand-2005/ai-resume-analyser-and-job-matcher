@@ -1,0 +1,1 @@
+export default function JobBridgeStatus(){return <section><h2>JobBridge</h2><p>Job discovery platform</p></section>}
