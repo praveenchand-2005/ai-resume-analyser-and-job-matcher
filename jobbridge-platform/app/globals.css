@@ -202,11 +202,18 @@ a { text-decoration: none; color: inherit; }
   .rs-footer { align-items: flex-start; flex-direction: column; padding: 23px 20px; }
 }
 @media print {
-  body { background: #fff !important; }
-  .rs-header, .rs-hero, .rs-workspace > .rs-section-heading, .rs-start-grid, .rs-editor-sidebar, .rs-editor-title, .rs-file-note, .rs-form-grid, .rs-field, .rs-editor-actions, .rs-preview-column, .rs-footer, .rs-alert, .rs-visually-hidden { display: none !important; }
-  .rs-shell, .rs-workspace, .rs-editor-layout, .rs-editor-main { display: block !important; padding: 0 !important; margin: 0 !important; border: 0 !important; background: #fff !important; box-shadow: none !important; }
-  .rs-editor-main:before { content: "Resume"; display: block; margin: 0 0 18pt; font: 24pt Georgia, serif; }
-  .rs-editor-main .rs-editor-title { display: none !important; }
-  .rs-editor-main .rs-field { display: none !important; }
-  .rs-editor-main:after { content: "Use Export DOCX for the complete editable document. For PDF, use your browser's print-to-PDF workflow."; display: block; font-size: 10pt; }
+  body { background: #fff !important; color: #24231f !important; }
+  .rs-header, .rs-hero, .rs-workspace > .rs-section-heading, .rs-start-grid, .rs-editor-sidebar, .rs-editor-main, .rs-footer, .rs-alert, .rs-visually-hidden { display: none !important; }
+  .rs-shell, .rs-workspace, .rs-editor-layout { display: block !important; padding: 0 !important; margin: 0 !important; border: 0 !important; background: #fff !important; box-shadow: none !important; }
+  .rs-editor-layout { display: block !important; }
+  .rs-preview-column { display: block !important; width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; border: 0 !important; background: #fff !important; }
+  .rs-preview-head, .rs-preview-caption { display: none !important; }
+  .rs-preview-paper { min-height: 0 !important; padding: 0 !important; box-shadow: none !important; }
+  .rs-preview-name { font: 25pt Georgia, serif !important; }
+  .rs-preview-headline { margin-top: 5pt !important; font-size: 10pt !important; }
+  .rs-preview-contact { margin-top: 7pt !important; font-size: 8pt !important; }
+  .rs-preview-section { margin-top: 14pt !important; break-inside: avoid; }
+  .rs-preview-section h4 { margin-bottom: 5pt !important; padding-bottom: 4pt !important; font-size: 8pt !important; }
+  .rs-preview-section p { font-size: 9pt !important; line-height: 1.5 !important; }
+  @page { margin: 18mm; }
 }
