@@ -152,7 +152,7 @@ export default function ResumeStudio() {
   const [resume, setResume] = useState<ResumeDraft>(emptyResume);
   const [jobDescription, setJobDescription] = useState("");
   const [fileName, setFileName] = useState("");
-  const [stage, setStage] = useState<"start" | "edit">("start");
+  const [stage, setStage] = useState<"start" | "edit">("edit");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
