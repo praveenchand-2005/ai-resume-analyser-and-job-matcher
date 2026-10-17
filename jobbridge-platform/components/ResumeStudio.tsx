@@ -232,7 +232,7 @@ export default function ResumeStudio() {
           const content = await page.getTextContent();
           pages.push(
             content.items
-              .map((item: { str?: string }) => item.str ?? "")
+              .map((item) => ("str" in item ? item.str : ""))
               .filter(Boolean)
               .join(" "),
           );
