@@ -136,7 +136,7 @@ function saveBlob(blob: Blob, filename: string) {
   anchor.href = url;
   anchor.download = filename;
   anchor.click();
-  URL.revokeObjectURL(url);
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function addTextParagraphs(value: string) {
@@ -239,7 +239,7 @@ export default function ResumeStudio() {
         }
         extracted = pages.join("\n");
       } else {
-        const mammoth = await import("mammoth/mammoth.browser");
+        const mammoth = await import("mammoth");
         const result = await mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() });
         extracted = result.value;
       }
