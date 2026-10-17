@@ -330,40 +330,6 @@ export default function ResumeStudio() {
         <div className="rs-header-note"><span className="rs-status-dot" /> Your career, thoughtfully prepared</div>
       </header>
 
-      <section className="rs-hero">
-        <div className="rs-eyebrow"><span>CAREER ESSENTIALS</span><i /> PRODUCT 01</div>
-        <div className="rs-hero-grid">
-          <div className="rs-hero-copy">
-            <h1>A resume that<br /><em>opens the next door.</em></h1>
-            <p>Build a clear, credible resume from the experience you actually have. Refine every detail, understand the gaps, and leave with a document you are proud to send.</p>
-            <div className="rs-hero-actions">
-              <button className="rs-button rs-button-primary" onClick={() => inputRef.current?.click()} disabled={busy}>
-                {busy ? "Reading your document…" : "Improve my resume"} <span aria-hidden="true">↗</span>
-              </button>
-              <button className="rs-button rs-button-quiet" onClick={startBlank}>Start from scratch <span aria-hidden="true">→</span></button>
-            </div>
-            <div className="rs-trust-line"><span>PDF · DOCX · TXT</span><span>Private by design</span><span>No invented achievements</span></div>
-          </div>
-          <div className="rs-hero-art" aria-label="Resume document preview illustration">
-            <div className="rs-art-back" />
-            <div className="rs-paper">
-              <div className="rs-paper-top"><span>SR / CAREER DOCUMENT</span><span>01 — 01</span></div>
-              <div className="rs-paper-name">Your Name<span>.</span></div>
-              <div className="rs-paper-role">ROLE · SPECIALTY · DIRECTION</div>
-              <div className="rs-paper-rule" />
-              <div className="rs-paper-label">PROFILE</div>
-              <div className="rs-paper-lines"><i /><i /><i className="short" /></div>
-              <div className="rs-paper-label">EXPERIENCE</div>
-              <div className="rs-paper-experience"><b /><div><i /><i className="medium" /><i className="short" /></div></div>
-              <div className="rs-paper-experience"><b /><div><i /><i className="medium" /><i className="short" /></div></div>
-              <div className="rs-paper-label">SELECTED SKILLS</div>
-              <div className="rs-paper-tags"><i /><i /><i /><i /></div>
-              <div className="rs-paper-footer"><span>CLARITY OVER CLAIMS</span><span>SELECTREADY</span></div>
-            </div>
-            <div className="rs-art-stamp"><span>YOUR STORY,</span><strong>WELL TOLD.</strong><i>✳</i></div>
-          </div>
-        </div>
-      </section>
 
       <section className="rs-workspace" id="workspace">
         <div className="rs-section-heading">
