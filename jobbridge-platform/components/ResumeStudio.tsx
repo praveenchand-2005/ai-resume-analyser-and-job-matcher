@@ -322,7 +322,10 @@ export default function ResumeStudio() {
         </a>
         <nav className="rs-nav" aria-label="Main navigation">
           <a className="rs-nav-active" href="/resume-studio">Resume Studio</a>
-          <a href="/jobs">Explore jobs <span aria-hidden="true">↗</span></a>
+          <a href="#workspace">Templates</a>
+          <a href="#workspace">Cover Letter</a>
+          <a href="#workspace">Interview Prep</a>
+          <a href="/jobs">Career Tools</a>
         </nav>
         <div className="rs-header-note"><span className="rs-status-dot" /> Your career, thoughtfully prepared</div>
       </header>
@@ -364,8 +367,8 @@ export default function ResumeStudio() {
 
       <section className="rs-workspace" id="workspace">
         <div className="rs-section-heading">
-          <div><div className="rs-eyebrow"><span>THE WORKSPACE</span></div><h2>Start with what you have.</h2></div>
-          <p>Thoughtful tools. Clear feedback.<br />Your experience stays yours.</p>
+          <div><div className="rs-eyebrow"><span>SELECTREADY AI</span><i /> RESUME WORKSPACE</div><h2>Resume Studio</h2><p className="rs-workspace-subtitle">Create, optimize and download a professional resume. Tailored for your dream job.</p></div>
+          <div className="rs-progress-steps" aria-label="Resume workflow"><span className="current"><b>1</b> Build</span><i /><span><b>2</b> Optimize</span><i /><span><b>3</b> ATS Check</span><i /><span><b>4</b> Download</span></div>
         </div>
 
         {stage === "start" ? (
