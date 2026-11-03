@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { timingSafeEqual } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
-import { buildJobGuide, buildShortVideo, JobForContent } from "../../../../lib/jobbridgeContent";
+import { buildJobGuide, buildShortVideo, JobForContent } from "../../../../../lib/jobbridgeContent";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 function authorized(request: NextRequest) {
