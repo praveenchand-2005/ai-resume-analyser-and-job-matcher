@@ -18,10 +18,11 @@ Help a fresher move from an unstructured resume and uncertain interview preparat
 - POST /api/ai/interview action start: create a mock interview and generate the first question.
 - POST /api/ai/interview action answer: evaluate the answer and generate the next question for a six-turn session.
 - POST /api/ai/study-plan: create and persist a 7- or 14-day role-specific preparation plan.
+- POST /api/ai/problem-lab: generate original SQL/Python/DSA practice problems or statically review candidate-submitted code; it does not execute code.
 - GET /api/health: show database/AI configuration state without returning secrets.
 
 ## Database
-candidate_profiles, candidate_resumes, job_targets, resume_analyses, interview_sessions, interview_turns, learning_plans.
+candidate_profiles, candidate_resumes, job_targets, resume_analyses, interview_sessions, interview_turns, learning_plans, practice_problems, problem_submissions.
 Every candidate table has user_id ownership and RLS. Explicit Data API grants are included because newly created public-schema tables are no longer automatically exposed by default.
 
 ## Preview environment
