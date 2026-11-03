@@ -9,16 +9,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!article) return { title: "Guide not found | JobBridge India" };
   return { title: article.seo_title ?? article.title, description: article.seo_description ?? article.title };
 }
+function renderLines(lines: string[], key: number) {
+  const clean = lines.map((line) => line.trim()).filter(Boolean);
+  if (!clean.length) return null;
+  if (clean.every((line) => /^-\s/.test(line)))
+    return <ul key={key} className="list-disc space-y-2 pl-6">{clean.map((line, i) => <li key={i}>{line.replace(/^-\s/, "")}</li>)}</ul>;
+  if (clean.every((line) => /^\d+\.\s/.test(line)))
+    return <ol key={key} className="list-decimal space-y-2 pl-6">{clean.map((line, i) => <li key={i}>{line.replace(/^\d+\.\s/, "")}</li>)}</ol>;
+  return <p key={key}>{clean.join(" ")}</p>;
+}
 function GuideBody({ content }: { content: string }) {
   const blocks = content.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
   return <div className="mt-4 space-y-5 text-sm leading-7 text-slate-300">
     {blocks.map((block, index) => {
       const lines = block.split("\n");
-      if (lines[0].startsWith("# ")) return <h2 key={index} className="text-2xl font-bold text-white">{lines[0].slice(2)}</h2>;
-      if (lines[0].startsWith("## ")) return <h3 key={index} className="pt-2 text-xl font-semibold text-white">{lines[0].slice(3)}</h3>;
-      if (lines.every((line) => /^-\s/.test(line))) return <ul key={index} className="list-disc space-y-2 pl-6">{lines.map((line, i) => <li key={i}>{line.replace(/^-\s/, "")}</li>)}</ul>;
-      if (lines.every((line) => /^\d+\.\s/.test(line))) return <ol key={index} className="list-decimal space-y-2 pl-6">{lines.map((line, i) => <li key={i}>{line.replace(/^\d+\.\s/, "")}</li>)}</ol>;
-      return <p key={index}>{lines.join(" ")}</p>;
+      const first = lines[0];
+      if (first.startsWith("# ")) return <section key={index} className="space-y-3"><h2 className="text-2xl font-bold text-white">{first.slice(2)}</h2>{renderLines(lines.slice(1), index + 1000)}</section>;
+      if (first.startsWith("## ")) return <section key={index} className="space-y-3"><h3 className="pt-2 text-xl font-semibold text-white">{first.slice(3)}</h3>{renderLines(lines.slice(1), index + 1000)}</section>;
+      return renderLines(lines, index);
     })}
   </div>;
 }
