@@ -8,6 +8,7 @@ type IncomingJob = {
   location?: string | null; work_mode?: "remote" | "hybrid" | "onsite" | null;
   employment_type?: string | null; experience?: string | null; salary_text?: string | null;
   skills?: string[]; description?: string | null; source_name: string; source_url: string;
+  source_type?: "employer" | "government" | "rss" | "greenhouse" | "lever" | "manual";
   apply_url: string; posted_at?: string | null; expires_at?: string | null; external_id?: string | null;
 };
 function isHttpsUrl(value: string) {
@@ -41,20 +42,25 @@ export async function POST(request: NextRequest) {
   if (run.error || !run.data) return NextResponse.json({ error: "Could not start ingestion audit.", detail: run.error?.message }, { status: 500 });
   let inserted = 0; let rejected = 0; const errors: string[] = [];
   for (const job of payload.jobs) {
+    const sourceUrl = new URL(job.source_url).toString();
+    const source = await supabase.from("jobbridge_sources").upsert({
+      name: job.source_name.trim(), source_type: job.source_type ?? "employer", source_url: sourceUrl, is_active: true
+    }, { onConflict: "source_url" }).select("id").single();
+    if (source.error || !source.data) { rejected++; errors.push(`${job.title}: source registry upsert failed`); continue; }
     const company = await supabase.from("jobbridge_companies").upsert({
       name: job.company_name.trim(), slug: slugify(job.company_name), website_url: job.company_website ?? null
     }, { onConflict: "slug" }).select("id").single();
     if (company.error || !company.data) { rejected++; errors.push(`${job.title}: company upsert failed`); continue; }
-    const hash = createHash("sha256").update(new URL(job.source_url).toString()).digest("hex").slice(0, 10);
+    const hash = createHash("sha256").update(sourceUrl).digest("hex").slice(0, 10);
     const record = {
-      company_id: company.data.id, title: job.title.trim(), slug: `${slugify(job.title)}-${hash}`,
+      company_id: company.data.id, source_id: source.data.id, title: job.title.trim(), slug: `${slugify(job.title)}-${hash}`,
       location: job.location ?? null, work_mode: job.work_mode ?? null,
       employment_type: job.employment_type ?? null, experience: job.experience ?? null,
       salary_text: job.salary_text ?? null, skills: job.skills ?? [], description: job.description ?? null,
-      source_name: job.source_name.trim(), source_url: new URL(job.source_url).toString(),
-      apply_url: new URL(job.apply_url).toString(), posted_at: job.posted_at ?? new Date().toISOString(),
-      expires_at: job.expires_at ?? null, external_id: job.external_id ?? null,
-      verification_status: "pending", status: "draft", last_checked_at: new Date().toISOString()
+      source_name: job.source_name.trim(), source_url: sourceUrl, apply_url: new URL(job.apply_url).toString(),
+      posted_at: job.posted_at ?? new Date().toISOString(), expires_at: job.expires_at ?? null,
+      external_id: job.external_id ?? null, verification_status: "pending", status: "draft",
+      last_checked_at: new Date().toISOString()
     };
     const result = await supabase.from("jobbridge_jobs").upsert(record, { onConflict: "source_url" });
     if (result.error) { rejected++; errors.push(`${job.title}: ${result.error.message}`); } else inserted++;
