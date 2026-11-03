@@ -1,9 +1,7 @@
 "use client";
-
 import { useState } from "react";
 import { trackApplyClick } from "../lib/applyClick";
-
-export default function ApplyButton({jobId,applyUrl}:{jobId:number;applyUrl:string}) {
+export default function ApplyButton({jobId,applyUrl}:{jobId:string;applyUrl:string}) {
   const [loading,setLoading]=useState(false);
   async function handleApply(){
     setLoading(true);
