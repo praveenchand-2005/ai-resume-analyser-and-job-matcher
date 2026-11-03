@@ -295,6 +295,28 @@ export default function ResumeStudio() {
     }
   }
 
+  async function saveResume() {
+    setError("");
+    setNotice("");
+    try {
+      const response = await fetch("/api/resumes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: resume.fullName ? resume.fullName + " resume" : "My resume",
+          targetRole: resume.headline,
+          content: resume,
+          extractedText: [resume.fullName, resume.headline, resume.email, resume.phone, resume.location, "SUMMARY\n" + resume.summary, "SKILLS\n" + resume.skills, "EXPERIENCE\n" + resume.experience, "EDUCATION\n" + resume.education, "PROJECTS\n" + resume.projects].filter(Boolean).join("\n") || resumeText,
+        }),
+      });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error || "Could not save your resume.");
+      setNotice("Resume saved to your SelectReady account.");
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Could not save your resume.");
+    }
+  }
+
   function exportPdf() {
     setError("");
     setNotice("In the print dialog, choose “Save as PDF” to export your resume.");
@@ -324,7 +346,7 @@ export default function ResumeStudio() {
           <a className="rs-nav-active" href="/resume-studio">Resume Studio</a>
           <a href="#workspace">Templates</a>
           <a href="#workspace">Cover Letter</a>
-          <a href="#workspace">Interview Prep</a>
+          <a href="/ats-review">AI ATS Review</a><a href="/interview-prep">Interview Prep</a>
           <a href="/jobs">Career Tools</a>
         </nav>
         <div className="rs-header-note"><span className="rs-status-dot" /> Your career, thoughtfully prepared</div>
@@ -382,7 +404,7 @@ export default function ResumeStudio() {
                   {field("Experience", "experience", "Role, organization, dates, responsibilities, and verified impact.", 5)}
                   {field("Education", "education", "Degree, institution, dates, relevant coursework or achievements.", 3)}
                   {field("Projects", "projects", "Project context, your contribution, tools used, and evidence.", 4)}
-                  <div className="rs-editor-actions"><button className="rs-button rs-button-primary" onClick={() => setActiveTab("match")}>Review job alignment <span>→</span></button><button className="rs-button rs-button-outline" onClick={exportDocx}>Export DOCX ↓</button><button className="rs-button rs-button-outline" onClick={exportPdf}>Save as PDF ↗</button></div>
+                  <div className="rs-editor-actions"><button className="rs-button rs-button-primary" onClick={() => setActiveTab("match")}>Review job alignment <span>→</span></button><button className="rs-button rs-button-outline" onClick={saveResume}>Save to account</button><button className="rs-button rs-button-outline" onClick={exportDocx}>Export DOCX ↓</button><button className="rs-button rs-button-outline" onClick={exportPdf}>Save as PDF ↗</button></div>
                 </>
               ) : (
                 <>
