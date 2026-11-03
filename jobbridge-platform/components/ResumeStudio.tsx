@@ -306,7 +306,7 @@ export default function ResumeStudio() {
           title: resume.fullName ? resume.fullName + " resume" : "My resume",
           targetRole: resume.headline,
           content: resume,
-          extractedText: resumeText,
+          extractedText: [resume.fullName, resume.headline, resume.email, resume.phone, resume.location, "SUMMARY\n" + resume.summary, "SKILLS\n" + resume.skills, "EXPERIENCE\n" + resume.experience, "EDUCATION\n" + resume.education, "PROJECTS\n" + resume.projects].filter(Boolean).join("\n") || resumeText,
         }),
       });
       const payload = await response.json();
