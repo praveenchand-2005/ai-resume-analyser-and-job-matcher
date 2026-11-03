@@ -25,4 +25,5 @@ alter table public.practice_problems enable row level security;
 alter table public.problem_submissions enable row level security;
 create policy practice_problems_owner on public.practice_problems for all to authenticated using ((select auth.uid())=user_id) with check ((select auth.uid())=user_id);
 create policy problem_submissions_owner on public.problem_submissions for all to authenticated using ((select auth.uid())=user_id) with check ((select auth.uid())=user_id);
-grant select,insert,update,delete on public.practice_problems,public.problem_submissions to authenticated;
+revoke all privileges on table public.practice_problems,public.problem_submissions from anon,authenticated,public;
+grant select,insert,update,delete on table public.practice_problems,public.problem_submissions to authenticated;
