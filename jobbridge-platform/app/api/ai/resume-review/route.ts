@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getUserContext } from "../../../../lib/auth/require-user";
 import { AIConfigurationError, AIProviderError, generateStructuredResponse } from "../../../../lib/ai/provider";
+import { consumeAiQuota } from "../../../../lib/ai/quota";
 export const runtime = "nodejs";
 
 type Review = {
@@ -28,6 +29,10 @@ export async function POST(request:NextRequest) {
     resumeText = resumeText || data.extracted_text;
   }
   if (!resumeText || resumeText.length>30000) return NextResponse.json({error:"Resume text is required and must be under 30,000 characters."},{status:400});
+
+  const allowed = await consumeAiQuota(ctx.supabase, "resume_review").catch(() => null);
+  if (allowed === null) return NextResponse.json({ error: "AI usage protection is unavailable; request blocked." }, { status: 503 });
+  if (!allowed) return NextResponse.json({ error: "Free AI practice limit reached. Retry after a short break." }, { status: 429 });
 
   try {
     const system = [

@@ -12,6 +12,9 @@ export async function POST(request:NextRequest) {
   const gaps=Array.isArray(body?.skillGaps)?body.skillGaps.slice(0,15):[];
   const days=Number(body?.days)===14?14:7;
   if (!role) return NextResponse.json({error:"Enter a target role."},{status:400});
+  const allowed=await consumeAiQuota(ctx.supabase,"study_plan").catch(()=>null);
+  if(allowed===null)return NextResponse.json({error:"AI usage protection is unavailable; request blocked."},{status:503});
+  if(!allowed)return NextResponse.json({error:"Free AI practice limit reached. Retry after a short break."},{status:429});
   try {
     const {data:plan,model}=await generateStructuredResponse<Plan>(
       "You are a practical career mentor for Indian freshers. Create a realistic daily plan. Recommend free learning activities by type, not invented URLs. Every task needs a measurable deliverable. Do not promise a job. Return JSON days[{day,focus,task,deliverable,estimated_minutes}].",

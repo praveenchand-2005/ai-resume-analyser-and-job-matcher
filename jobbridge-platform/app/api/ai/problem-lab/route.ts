@@ -1,6 +1,7 @@
 import { NextRequest,NextResponse } from "next/server";
 import { getUserContext } from "../../../../lib/auth/require-user";
 import { AIConfigurationError,AIProviderError,generateStructuredResponse } from "../../../../lib/ai/provider";
+import { consumeAiQuota } from "../../../../lib/ai/quota";
 export const runtime="nodejs";
 
 type PracticeProblem={
@@ -21,6 +22,10 @@ export async function POST(request:NextRequest){
  if(!ctx)return NextResponse.json({error:"Sign in to use the AI problem lab."},{status:401});
  const body=await request.json().catch(()=>null);
  if(!body||typeof body.action!=="string")return NextResponse.json({error:"Choose generate or review."},{status:400});
+ if(!["generate","review"].includes(body.action))return NextResponse.json({error:"Unsupported problem-lab action."},{status:400});
+ const allowed=await consumeAiQuota(ctx.supabase,"problem_lab_"+body.action).catch(()=>null);
+ if(allowed===null)return NextResponse.json({error:"AI usage protection is unavailable; request blocked."},{status:503});
+ if(!allowed)return NextResponse.json({error:"Free AI practice limit reached. Retry after a short break."},{status:429});
  try{
   if(body.action==="generate"){
    const topic=typeof body.topic==="string"?body.topic.slice(0,60):"Python";
