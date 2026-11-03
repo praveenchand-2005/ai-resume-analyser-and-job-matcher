@@ -30,7 +30,7 @@ export async function POST(request:NextRequest) {
   }
   if (!resumeText || resumeText.length>30000) return NextResponse.json({error:"Resume text is required and must be under 30,000 characters."},{status:400});
 
-  const allowed = await consumeAiQuota(ctx.supabase, "resume_review").catch(() => null);
+  const allowed = await consumeAiQuota(ctx.supabase, ctx.userId, "resume_review").catch(() => null);
   if (allowed === null) return NextResponse.json({ error: "AI usage protection is unavailable; request blocked." }, { status: 503 });
   if (!allowed) return NextResponse.json({ error: "Free AI practice limit reached. Retry after a short break." }, { status: 429 });
 

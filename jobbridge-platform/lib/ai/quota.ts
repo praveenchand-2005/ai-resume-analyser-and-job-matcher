@@ -1,5 +1,8 @@
-export async function consumeAiQuota(supabase:any,action:string):Promise<boolean>{
- const {data,error}=await supabase.rpc("claim_selectready_ai_request",{p_action:action,p_per_minute:8,p_per_day:40});
- if(error)throw new Error("AI usage protection unavailable.");
- return data===true;
+export async function consumeAiQuota(supabase:any,userId:string,action:string):Promise<boolean>{
+ const {error}=await supabase.from("ai_usage_events").insert({
+  user_id:userId,action:action.slice(0,60)
+ });
+ if(!error)return true;
+ if(error.code==="P0001" || String(error.message||"").includes("AI_RATE_LIMIT_REACHED"))return false;
+ throw new Error("AI usage protection unavailable.");
 }

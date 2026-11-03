@@ -23,7 +23,7 @@ export async function POST(request:NextRequest){
  const body=await request.json().catch(()=>null);
  if(!body||typeof body.action!=="string")return NextResponse.json({error:"Choose generate or review."},{status:400});
  if(!["generate","review"].includes(body.action))return NextResponse.json({error:"Unsupported problem-lab action."},{status:400});
- const allowed=await consumeAiQuota(ctx.supabase,"problem_lab_"+body.action).catch(()=>null);
+ const allowed=await consumeAiQuota(ctx.supabase,ctx.userId,"problem_lab_"+body.action).catch(()=>null);
  if(allowed===null)return NextResponse.json({error:"AI usage protection is unavailable; request blocked."},{status:503});
  if(!allowed)return NextResponse.json({error:"Free AI practice limit reached. Retry after a short break."},{status:429});
  try{

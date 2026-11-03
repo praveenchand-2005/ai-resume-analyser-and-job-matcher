@@ -12,7 +12,7 @@ export async function POST(request:NextRequest) {
   const gaps=Array.isArray(body?.skillGaps)?body.skillGaps.slice(0,15):[];
   const days=Number(body?.days)===14?14:7;
   if (!role) return NextResponse.json({error:"Enter a target role."},{status:400});
-  const allowed=await consumeAiQuota(ctx.supabase,"study_plan").catch(()=>null);
+  const allowed=await consumeAiQuota(ctx.supabase,ctx.userId,"study_plan").catch(()=>null);
   if(allowed===null)return NextResponse.json({error:"AI usage protection is unavailable; request blocked."},{status:503});
   if(!allowed)return NextResponse.json({error:"Free AI practice limit reached. Retry after a short break."},{status:429});
   try {
