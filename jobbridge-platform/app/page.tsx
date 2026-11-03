@@ -77,7 +77,7 @@ export default function Home() {
       </section>
 
       <section className="border-y border-slate-800 bg-slate-900/50"><div className="mx-auto grid max-w-6xl gap-8 px-6 py-12 md:grid-cols-3"><div><p className="text-cyan-300">01 / Discover</p><h3 className="mt-2 text-xl font-bold">Find relevant jobs</h3><p className="mt-2 text-sm leading-6 text-slate-400">Search by role, skills, location and work mode.</p></div><div><p className="text-cyan-300">02 / Understand</p><h3 className="mt-2 text-xl font-bold">Read practical job guides</h3><p className="mt-2 text-sm leading-6 text-slate-400">Get eligibility, skills, selection and application details in one place.</p></div><div><p className="text-cyan-300">03 / Apply</p><h3 className="mt-2 text-xl font-bold">Apply at the source</h3><p className="mt-2 text-sm leading-6 text-slate-400">We send you to the employer or official recruitment website.</p></div></div></section>
-      <footer className="mx-auto flex max-w-6xl flex-wrap justify-between gap-4 px-6 py-8 text-xs text-slate-500"><span>© {new Date().getFullYear()} JobBridge India</span><span>Independent job discovery service · Not a government website</span><span><Link href="/sources">Sources</Link> · <Link href="/blog">Career blog</Link></span></footer>
+      <footer className="mx-auto flex max-w-6xl flex-wrap justify-between gap-4 px-6 py-8 text-xs text-slate-500"><span>© {new Date().getFullYear()} JobBridge India</span><span>Independent job discovery service · Not a government website</span><span><Link href="/about">About</Link> · <Link href="/sources">Sources</Link> · <Link href="/blog">Blog</Link> · <Link href="/privacy">Privacy</Link> · <Link href="/terms">Terms</Link></span></footer>
     </main>
   );
 }
