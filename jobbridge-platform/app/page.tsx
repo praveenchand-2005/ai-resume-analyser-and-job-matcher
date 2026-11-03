@@ -1,2 +1,115 @@
 import Link from "next/link";
-export default function Home(){return <main className="min-h-screen bg-[#f7f4ed] text-[#24231f]"><header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6"><Link href="/" className="text-lg font-black">SELECTREADY <span className="font-normal text-[#b64e32]">AI</span></Link><div className="flex gap-3"><Link href="/login" className="rounded-xl border border-[#ded8cd] px-4 py-2 text-sm font-bold">Sign in</Link><Link href="/signup" className="rounded-xl bg-[#24231f] px-4 py-2 text-sm font-bold text-white">Get started</Link></div></header><section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 md:grid-cols-[1.1fr_.9fr]"><div><p className="text-xs font-black uppercase tracking-[.2em] text-[#b64e32]">Career engineering for freshers</p><h1 className="mt-5 font-serif text-6xl leading-[1.02] md:text-7xl">Don't just apply.<br/><em className="text-[#b64e32]">Become ready.</em></h1><p className="mt-7 max-w-xl text-lg leading-8 text-[#77736a]">Build a credible ATS-aware resume, understand the gap between your skills and the job, and practice explaining what you know in AI mock interviews.</p><div className="mt-8 flex flex-wrap gap-3"><Link href="/signup" className="rounded-xl bg-[#24231f] px-6 py-4 font-bold text-white">Build my career plan →</Link><Link href="/resume-studio" className="rounded-xl border border-[#ded8cd] px-6 py-4 font-bold">Explore Resume Studio</Link></div><p className="mt-5 text-xs text-[#77736a]">No fake experience. No guaranteed-job claims. Progress built on evidence.</p></div><div className="rounded-[2rem] border border-[#ded8cd] bg-[#fffdf8] p-7 shadow-2xl"><p className="text-xs font-black tracking-widest text-[#b64e32]">YOUR READINESS PATH</p>{[["01","Build","Create a clear resume from real evidence."],["02","Align","Understand role-specific skill gaps."],["03","Practice","Answer technical and HR interview questions."],["04","Improve","Follow a measurable preparation plan."]].map(([n,t,d])=><div key={n} className="mt-6 flex gap-4 border-b border-[#eee8dd] pb-5"><span className="font-serif text-2xl text-[#b64e32]">{n}</span><div><h2 className="font-serif text-2xl">{t}</h2><p className="mt-1 text-sm text-[#77736a]">{d}</p></div></div>)}</div></section><section className="border-y border-[#ded8cd] bg-[#eee9df] px-6 py-14"><div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-3"><div><h2 className="font-serif text-2xl">ATS-aware resume</h2><p className="mt-2 text-sm text-[#77736a]">Parse, edit, export and compare with job requirements.</p></div><div><h2 className="font-serif text-2xl">AI interview practice</h2><p className="mt-2 text-sm text-[#77736a]">Technical, SQL, Python, HR and project-based sessions.</p></div><div><h2 className="font-serif text-2xl">Skill gap closure</h2><p className="mt-2 text-sm text-[#77736a]">Get measurable tasks based on your target role.</p></div></div></section><footer className="mx-auto max-w-6xl px-6 py-8 text-xs text-[#77736a]">SELECTREADY AI · AI feedback supports preparation; it does not guarantee hiring outcomes.</footer></main>;}
+
+const steps = [
+  ["01", "Build", "Create a clear resume from real evidence."],
+  ["02", "Align", "Understand role-specific skill gaps."],
+  ["03", "Practice", "Answer technical and HR interview questions."],
+  ["04", "Improve", "Follow a measurable preparation plan."],
+];
+
+const tools = [
+  ["Resume Studio", "Build, edit and export a structured resume.", "/resume-studio", "01"],
+  ["ATS Review", "Compare your resume with a real job description.", "/ats-review", "02"],
+  ["AI Interview", "Practise technical, SQL, Python and HR questions.", "/interview-prep", "03"],
+  ["Problem Lab", "Work through role-relevant coding and data problems.", "/problem-lab", "04"],
+];
+
+export default function Home() {
+  return (
+    <main className="sr-home">
+      <header className="sr-header">
+        <Link href="/" className="sr-brand" aria-label="SelectReady AI home">
+          <span className="sr-brand-mark">S</span>
+          <span>SELECTREADY <i>AI</i></span>
+        </Link>
+        <nav className="sr-nav" aria-label="Main navigation">
+          <a href="#how-it-works">How it works</a>
+          <a href="#tools">Career tools</a>
+          <a href="#plans">Plans</a>
+        </nav>
+        <div className="sr-header-actions">
+          <Link href="/login" className="sr-login">Sign in</Link>
+          <Link href="/signup" className="sr-cta sr-cta-small">Get started <span>↗</span></Link>
+        </div>
+      </header>
+
+      <section className="sr-hero">
+        <div className="sr-hero-copy">
+          <p className="sr-eyebrow"><span /> CAREER ENGINEERING FOR FRESHERS</p>
+          <h1>Don't just apply.<br /><em>Become ready.</em></h1>
+          <p className="sr-lede">Build a credible resume, understand the gap between your skills and the job, and practise explaining what you know with structured interview coaching.</p>
+          <div className="sr-hero-actions">
+            <Link href="/signup" className="sr-cta">Build my career plan <span>→</span></Link>
+            <Link href="/resume-studio" className="sr-secondary">Explore Resume Studio</Link>
+          </div>
+          <div className="sr-trust"><span>No fake experience</span><span>Evidence-first feedback</span><span>Built for freshers</span></div>
+        </div>
+        <div className="sr-hero-visual" aria-label="Illustration of a candidate resume and career readiness score">
+          <div className="sr-orbit sr-orbit-one" />
+          <div className="sr-resume-card">
+            <div className="sr-resume-top"><span>CAREER PROFILE</span><span>SR / 2026</span></div>
+            <div className="sr-resume-avatar">P</div>
+            <div className="sr-resume-name">Your next chapter<span>.</span></div>
+            <div className="sr-resume-role">ASPIRING PROFESSIONAL · SKILLS IN PROGRESS</div>
+            <div className="sr-resume-rule" />
+            <div className="sr-resume-label">PROOF OF SKILL</div>
+            <div className="sr-line sr-line-long" /><div className="sr-line sr-line-mid" /><div className="sr-line sr-line-short" />
+            <div className="sr-resume-label">CAREER READINESS</div>
+            <div className="sr-progress"><span /></div>
+            <div className="sr-resume-foot"><span>BUILD</span><span>ALIGN</span><span>PRACTISE</span><span>IMPROVE</span></div>
+          </div>
+          <div className="sr-float-note"><b>01 / YOUR PLAN</b><span>One clear next step at a time.</span></div>
+        </div>
+      </section>
+
+      <section className="sr-proof-strip" id="how-it-works">
+        <div className="sr-section-kicker">THE READINESS PATH</div>
+        <div className="sr-steps">
+          {steps.map(([number, title, description]) => (
+            <article className="sr-step" key={number}>
+              <span>{number}</span><h2>{title}</h2><p>{description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="sr-tools" id="tools">
+        <div className="sr-section-head">
+          <div><p className="sr-eyebrow"><span /> YOUR CAREER WORKSPACE</p><h2>Everything you need to<br /><em>prepare with purpose.</em></h2></div>
+          <p>Practical tools for the work between applying and getting hired. Start free and build from what you can demonstrate.</p>
+        </div>
+        <div className="sr-tool-grid">
+          {tools.map(([title, description, href, number]) => (
+            <Link href={href} className="sr-tool-card" key={number}>
+              <span className="sr-tool-number">{number}</span><span className="sr-tool-arrow">↗</span>
+              <h3>{title}</h3><p>{description}</p><span className="sr-tool-link">Explore tool <b>→</b></span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="sr-pricing" id="plans">
+        <div className="sr-pricing-copy">
+          <p className="sr-eyebrow"><span /> SIMPLE, STUDENT-FRIENDLY ACCESS</p>
+          <h2>Start free.<br /><em>Go further when ready.</em></h2>
+          <p>Use the core career workspace first. Premium coaching is planned for candidates who want more guided practice and deeper feedback.</p>
+        </div>
+        <div className="sr-plan-card">
+          <div className="sr-plan-top"><span>PROPOSED EARLY-ACCESS PLAN</span><span className="sr-plan-tag">PLANNED</span></div>
+          <h3>Career Plus</h3>
+          <div className="sr-price">₹199 <small>/ month</small></div>
+          <p className="sr-plan-desc">A proposed pilot price, subject to validation with students.</p>
+          <ul><li>Expanded AI resume reviews</li><li>More mock interview practice</li><li>Personalised preparation plans</li><li>Progress history and insights</li></ul>
+          <Link href="/signup" className="sr-cta sr-cta-full">Join the early-access list <span>→</span></Link>
+          <p className="sr-payment-note">Payments are not enabled yet. Joining does not charge you.</p>
+        </div>
+      </section>
+
+      <footer className="sr-footer">
+        <Link href="/" className="sr-brand"><span className="sr-brand-mark">S</span><span>SELECTREADY <i>AI</i></span></Link>
+        <p>No guaranteed-job claims. Progress built on evidence.</p>
+        <span>© 2026 SELECTREADY AI</span>
+      </footer>
+    </main>
+  );
+}
