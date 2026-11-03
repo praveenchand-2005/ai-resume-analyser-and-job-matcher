@@ -8,7 +8,7 @@ Help a fresher move from an unstructured resume and uncertain interview preparat
 - Identity: Supabase Auth with cookie-based SSR using @supabase/ssr.
 - Database: dedicated Supabase project selectready-ai in Mumbai (ap-south-1).
 - Authorization: PostgreSQL RLS on every candidate table; each row is scoped to auth.uid().
-- AI: server-only OpenAI-compatible chat-completions adapter. NVIDIA NIM can be configured with AI_API_BASE_URL, AI_API_KEY and AI_MODEL. No AI secret is committed or exposed to browser code.
+- AI: server-only OpenAI-compatible chat-completions adapter. NVIDIA NIM can be configured with AI_API_BASE_URL, AI_API_KEY and AI_MODEL. No AI secret is committed or exposed to browser code. AI requests are guarded by a private database trigger enforcing 8 requests/minute and 40/day per account.
 - Hosting: existing Vercel Hobby project; preview only until production is separately approved.
 - Resume parsing: PDF.js / Mammoth in browser; extracted text and structured fields are submitted to app APIs.
 
@@ -19,10 +19,11 @@ Help a fresher move from an unstructured resume and uncertain interview preparat
 - POST /api/ai/interview action answer: evaluate the answer and generate the next question for a six-turn session.
 - POST /api/ai/study-plan: create and persist a 7- or 14-day role-specific preparation plan.
 - POST /api/ai/problem-lab: generate original SQL/Python/DSA practice problems or statically review candidate-submitted code; it does not execute code.
+- AI quota enforcement: authenticated inserts into ai_usage_events fire a private SECURITY DEFINER trigger with a fixed search_path; the trigger is not exposed as a callable Data API RPC.
 - GET /api/health: show database/AI configuration state without returning secrets.
 
 ## Database
-candidate_profiles, candidate_resumes, job_targets, resume_analyses, interview_sessions, interview_turns, learning_plans, practice_problems, problem_submissions.
+candidate_profiles, candidate_resumes, job_targets, resume_analyses, interview_sessions, interview_turns, learning_plans, practice_problems, problem_submissions, ai_usage_events.
 Every candidate table has user_id ownership and RLS. Explicit Data API grants are included because newly created public-schema tables are no longer automatically exposed by default.
 
 ## Preview environment
