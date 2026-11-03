@@ -2,10 +2,10 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "JobBridge — Find jobs. Apply direct.",
-  description: "Job discovery and direct employer application platform.",
+  title: "SelectReady — Resume Studio",
+  description: "Build a clear, credible resume with thoughtful editing and transparent job-alignment feedback.",
 };
 
-export default function RootLayout({children}:{children:React.ReactNode}) {
-  return <html lang="en"><body className="bg-slate-950 text-white antialiased">{children}</body></html>;
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return <html lang="en"><body>{children}</body></html>;
 }
