@@ -9,6 +9,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!article) return { title: "Guide not found | JobBridge India" };
   return { title: article.seo_title ?? article.title, description: article.seo_description ?? article.title };
 }
+function GuideBody({ content }: { content: string }) {
+  const blocks = content.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
+  return <div className="mt-4 space-y-5 text-sm leading-7 text-slate-300">
+    {blocks.map((block, index) => {
+      const lines = block.split("\n");
+      if (lines[0].startsWith("# ")) return <h2 key={index} className="text-2xl font-bold text-white">{lines[0].slice(2)}</h2>;
+      if (lines[0].startsWith("## ")) return <h3 key={index} className="pt-2 text-xl font-semibold text-white">{lines[0].slice(3)}</h3>;
+      if (lines.every((line) => /^-\s/.test(line))) return <ul key={index} className="list-disc space-y-2 pl-6">{lines.map((line, i) => <li key={i}>{line.replace(/^-\s/, "")}</li>)}</ul>;
+      if (lines.every((line) => /^\d+\.\s/.test(line))) return <ol key={index} className="list-decimal space-y-2 pl-6">{lines.map((line, i) => <li key={i}>{line.replace(/^\d+\.\s/, "")}</li>)}</ol>;
+      return <p key={index}>{lines.join(" ")}</p>;
+    })}
+  </div>;
+}
 export default async function JobGuide({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const { data: article } = await supabase.from("jobbridge_articles")
@@ -23,7 +36,7 @@ export default async function JobGuide({ params }: { params: Promise<{ slug: str
     <h1 className="mt-3 text-4xl font-black leading-tight">{article.title}</h1>
     <p className="mt-4 text-slate-400">{company?.name ?? "Employer"} · {job?.location ?? "Location not stated"} · {job?.work_mode ?? "Work mode not stated"}</p>
     <p className="mt-6 text-lg leading-8 text-slate-300">{article.excerpt}</p>
-    <section className="mt-8 rounded-2xl border border-slate-800 bg-slate-900 p-6"><h2 className="text-xl font-bold">Original guide</h2><div className="mt-4 whitespace-pre-wrap break-words text-sm leading-7 text-slate-300">{article.body_markdown}</div></section>
+    <section className="mt-8 rounded-2xl border border-slate-800 bg-slate-900 p-6"><h2 className="text-xl font-bold">Original guide</h2><GuideBody content={article.body_markdown} /></section>
     {job?.source_url && <section className="mt-8 border-t border-slate-800 pt-6"><h2 className="text-xl font-bold">Verify and apply</h2><p className="mt-3 text-sm leading-6 text-slate-400">Confirm that the vacancy is still open and check all eligibility requirements on the original source. JobBridge India is an independent discovery service.</p><div className="mt-4 flex flex-wrap gap-4"><a href={job.source_url} target="_blank" rel="noopener noreferrer" className="font-semibold text-cyan-300 underline">Original source ↗</a>{job.apply_url && <a href={job.apply_url} target="_blank" rel="noopener noreferrer" className="font-semibold text-white underline">Official application ↗</a>}</div></section>}
   </article></main>;
 }
