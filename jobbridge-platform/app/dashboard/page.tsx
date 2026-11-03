@@ -1,0 +1,19 @@
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { createSupabaseServerClient } from "../../lib/supabase/server";
+import SignOutButton from "../../components/SignOutButton";
+export const dynamic="force-dynamic";
+export default async function DashboardPage(){
+ const supabase=await createSupabaseServerClient();const {data}=await supabase.auth.getClaims();const uid=typeof data?.claims?.sub==="string"?data.claims.sub:null;if(!uid)redirect("/login");
+ const [profile,resumes,reviews,sessions,plans]=await Promise.all([
+  supabase.from("candidate_profiles").select("full_name").eq("user_id",uid).maybeSingle(),
+  supabase.from("candidate_resumes").select("id,title,target_role").eq("user_id",uid).order("updated_at",{ascending:false}).limit(5),
+  supabase.from("resume_analyses").select("id,alignment_score").eq("user_id",uid).order("created_at",{ascending:false}).limit(5),
+  supabase.from("interview_sessions").select("id,target_role,status").eq("user_id",uid).order("created_at",{ascending:false}).limit(5),
+  supabase.from("learning_plans").select("id,target_role").eq("user_id",uid).order("created_at",{ascending:false}).limit(3)
+ ]);
+ const name=profile.data?.full_name||String(data?.claims?.email||"Candidate").split("@")[0];
+ return <main className="min-h-screen bg-[#f7f4ed] px-5 py-10 text-[#24231f]"><div className="mx-auto max-w-6xl"><header className="flex justify-between"><Link href="/" className="font-bold text-[#b64e32]">SELECTREADY AI</Link><SignOutButton/></header><p className="mt-10 text-xs font-bold uppercase tracking-[.18em] text-[#b64e32]">Your career workspace</p><h1 className="mt-2 font-serif text-5xl">Welcome, {name}.</h1><p className="mt-3 text-[#77736a]">Build proof of skill. Improve your resume. Practice until you can explain your work.</p><div className="mt-8 grid gap-4 md:grid-cols-3"><Action href="/resume-studio" title="Resume Studio" text="Import, edit, save and export your resume."/><Action href="/ats-review" title="AI role alignment" text="Compare your resume with a real job description."/><Action href="/interview-prep" title="Mock interview coach" text="Practice and receive structured feedback."/></div><section className="mt-9 grid gap-5 md:grid-cols-2"><Panel title="Saved resumes">{(resumes.data??[]).length?resumes.data!.map(r=><p key={r.id} className="mt-3 border-b border-[#eee8dd] pb-2 text-sm"><b>{r.title}</b> · {r.target_role}</p>):<p className="mt-3 text-sm text-[#77736a]">Your saved resumes will appear here.</p>}</Panel><Panel title="Resume reviews">{(reviews.data??[]).length?reviews.data!.map(r=><p key={r.id} className="mt-3 text-sm">Role alignment: <b>{r.alignment_score}/100</b></p>):<p className="mt-3 text-sm text-[#77736a]">Run an AI review to see your history.</p>}</Panel><Panel title="Interview sessions">{(sessions.data??[]).length?sessions.data!.map(s=><p key={s.id} className="mt-3 text-sm">{s.target_role} · {s.status}</p>):<p className="mt-3 text-sm text-[#77736a]">Your mock sessions will appear here.</p>}</Panel><Panel title="Preparation plans">{(plans.data??[]).length?plans.data!.map(p=><p key={p.id} className="mt-3 text-sm">{p.target_role}</p>):<p className="mt-3 text-sm text-[#77736a]">Your personalized plans will appear here.</p>}</Panel></section></div></main>;
+}
+function Action({href,title,text}:{href:string;title:string;text:string}){return <Link href={href} className="rounded-3xl border border-[#ded8cd] bg-[#fffdf8] p-6 hover:shadow-lg"><span className="text-xs font-bold tracking-widest text-[#b64e32]">OPEN TOOL ↗</span><h2 className="mt-4 font-serif text-2xl">{title}</h2><p className="mt-2 text-sm text-[#77736a]">{text}</p></Link>;}
+function Panel({title,children}:{title:string;children:React.ReactNode}){return <div className="rounded-3xl border border-[#ded8cd] bg-[#fffdf8] p-6"><h2 className="font-serif text-2xl">{title}</h2>{children}</div>;}
