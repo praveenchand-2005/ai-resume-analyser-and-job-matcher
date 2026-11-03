@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getUserContext } from "../../../../lib/auth/require-user";
 import { AIConfigurationError, AIProviderError, generateStructuredResponse } from "../../../../lib/ai/provider";
+import { consumeAiQuota } from "../../../../lib/ai/quota";
 export const runtime = "nodejs";
 
 type Question = {question:string;focus_skill:string;difficulty:"beginner"|"intermediate"|"advanced"};

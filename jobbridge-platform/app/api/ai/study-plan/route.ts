@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getUserContext } from "../../../../lib/auth/require-user";
 import { AIConfigurationError, AIProviderError, generateStructuredResponse } from "../../../../lib/ai/provider";
+import { consumeAiQuota } from "../../../../lib/ai/quota";
 export const runtime = "nodejs";
 type Plan = {days:Array<{day:number;focus:string;task:string;deliverable:string;estimated_minutes:number}>};
 
