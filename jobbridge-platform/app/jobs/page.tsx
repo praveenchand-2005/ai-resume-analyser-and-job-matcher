@@ -4,6 +4,10 @@ import JobListings from "../../components/JobListings";
 
 export const revalidate = 300;
 
+function isHttpUrl(value: string | null | undefined): value is string {
+  return typeof value === "string" && (value.startsWith("https://") || value.startsWith("http://"));
+}
+
 export default async function JobsPage() {
   const now = new Date().toISOString();
   const { data: jobs, error } = await supabase
@@ -15,7 +19,7 @@ export default async function JobsPage() {
     .order("posted_at", { ascending: false });
 
   const validJobs = (jobs ?? [])
-    .filter((job: any) => job.source_url && job.apply_url && /^https?:\\/\\//i.test(job.source_url) && /^https?:\\/\\//i.test(job.apply_url))
+    .filter((job: any) => isHttpUrl(job.source_url) && isHttpUrl(job.apply_url))
     .map((job: any) => ({
       ...job,
       company: Array.isArray(job.jobbridge_companies)
