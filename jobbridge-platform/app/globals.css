@@ -310,3 +310,11 @@ a { text-decoration: none; color: inherit; }
   .sr-ai-form,.sr-auth-form { grid-template-columns:minmax(0,1fr); }
   .sr-ai-wide { grid-column:auto; }
 }
+
+
+/* Resume Studio mobile navigation: wrap links instead of compressing them. */
+@media (max-width: 720px) {
+  .rs-header { height:auto; min-height:64px; padding:12px 18px; gap:10px 16px; flex-wrap:wrap; }
+  .rs-nav { order:3; width:100%; height:auto; display:flex; flex-wrap:wrap; justify-content:flex-start; gap:8px 14px; padding-top:10px; border-top:1px solid var(--rs-line); font-size:11px; }
+  .rs-nav a { height:auto; min-height:28px; white-space:nowrap; }
+}
