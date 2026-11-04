@@ -14,6 +14,7 @@ export default async function JobsPage() {
     .from("jobbridge_jobs")
     .select("id,title,slug,location,work_mode,employment_type,experience,salary_text,skills,source_name,source_url,apply_url,posted_at,expires_at,jobbridge_companies(name,slug)")
     .eq("status", "active")
+    .eq("verification_status", "verified")
     .not("source_url", "ilike", "%example.com%")
     .or(`expires_at.is.null,expires_at.gt.${now}`)
     .order("posted_at", { ascending: false });
